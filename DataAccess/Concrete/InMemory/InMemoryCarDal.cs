@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,11 @@ namespace DataAccess.Concrete.InMemory
         {
             //Oracle, SQL Server, Postgres, MongoDb
             _cars = new List<Car> {
-            new Car {Id = 1, BrandId = 1, ColorId = 1, DailyPrice=350, Description = "Arazi Arabası", ModelYear = "2012",CarName= "Volkswagen arazi arabası"},
-            new Car {Id = 2, BrandId = 2, ColorId = 2, DailyPrice=500, Description = "Yük Taşıma", ModelYear = "2000",CarName= "Scanıa yük taşıma aracı"},
-            new Car {Id = 3, BrandId = 3, ColorId = 3, DailyPrice=300, Description = "Yolcu Taşıma", ModelYear = "2010",CarName= "Mercedes yolcu taşıma aracı"},
-            new Car {Id = 4, BrandId = 1, ColorId = 2, DailyPrice=150, Description = "Günlük Kullanım", ModelYear = "2020",CarName= "Volkswagen günlük kullanım arabası"},
-            new Car {Id = 5, BrandId = 2, ColorId = 3, DailyPrice=400, Description = "Düğün Arabası", ModelYear = "2008",CarName= "Audi düğün arabası"}
+            new Car {Id = 1, BrandId = 1, ColorId = 1, DailyPrice=350, Description = "Arazi Aracı", ModelYear = "2012",CarName= "Volkswagen Amarok"},
+            new Car {Id = 2, BrandId = 2, ColorId = 2, DailyPrice=500, Description = "Yük Taşıma Aracı", ModelYear = "2000",CarName= "Scanıa R450"},
+            new Car {Id = 3, BrandId = 3, ColorId = 3, DailyPrice=300, Description = "Yolcu Taşıma Aracı", ModelYear = "2010",CarName= "Mercedes Travego"},
+            new Car {Id = 4, BrandId = 1, ColorId = 2, DailyPrice=150, Description = "Günlük Kullanım Arabası", ModelYear = "2020",CarName= "Volkswagen Golf"},
+            new Car {Id = 5, BrandId = 2, ColorId = 3, DailyPrice=400, Description = "Düğün Arabası", ModelYear = "2008",CarName= "Audi A6"}
             };
         }
         public void Add(Car car)
@@ -50,6 +51,11 @@ namespace DataAccess.Concrete.InMemory
         }
 
         public Car GetById(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<CarDetailDto> GetCarDetails()
         {
             throw new NotImplementedException();
         }
