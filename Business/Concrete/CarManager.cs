@@ -20,20 +20,14 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        public IResult Add(Car car)
+        public IResult Add(Car car)//Add metodunu doğrula CarValidator da ki kurallara göre
         {
             //Resultların içindekiler "" içinde olursa magic string olur
-            if (car.CarName.Length >= 2 && car.DailyPrice > 0)
-            {
+            //iş kuralları -- business
+            //araba ismi min 2 harf ve gunluk fiyatı 0dan buyuk olmalı
+           
                 _carDal.Add(car);
-                return new SuccessResult(Messages.CarAdded);
-            }
-            else
-            {
-                Console.WriteLine("Lütfen Tekrar Deneyiniz  ");
-                return new ErrorResult(Messages.NoCarAdded);
-            }
-           // return new Result(); if' ve else'e ayrı ayrı ekledim
+                return new SuccessResult(Messages.CarAdded);       
         }
 
         public IResult Delete(Car car)
