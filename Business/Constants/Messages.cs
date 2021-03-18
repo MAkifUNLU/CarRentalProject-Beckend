@@ -11,6 +11,7 @@ namespace Business.Constants
         public static string MaintenanceTime = "Sistem Bakımda";
         public static string Welcome = "Hoş Geldiniz";
         public static string GoodTrip = "İyi Yolculuklar Dileriz";
+        public static string CarImageLimitExceeded = "Resim Limitine Ulaşıldı";
 
         // Car Messages
         public static string CarAdded = "Araba Eklendi";
