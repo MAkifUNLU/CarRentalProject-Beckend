@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -18,12 +19,15 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
+
+        [SecuredOperation("rental.add,admin")]
         public IResult Add(Rental rental)
         {
             _rentalDal.Add(rental);
             return new SuccessResult(Messages.RentalAdded);
         }
 
+        [SecuredOperation("rental.delete,admin")]
         public IResult Delete(Rental rental)
         {
             _rentalDal.Delete(rental);
@@ -45,6 +49,7 @@ namespace Business.Concrete
            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
         }
 
+        [SecuredOperation("rental.update,admin")]
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);

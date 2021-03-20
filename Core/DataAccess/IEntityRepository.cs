@@ -13,7 +13,7 @@ namespace Core.DataAccess
     public interface IEntityRepository<T>where T : class,IEntity,new()
     {
         List<T> GetAll(Expression<Func<T,bool>>filter=null);
-        T GetById(Expression<Func<T, bool>> filter);//GetById    Get olabilir!!!
+        T GetById(Expression<Func<T, bool>> filter);//GetById    Get olabilir!!!Hatta Böyle yap!!!
         void Add(T entity);
         void Delete(T entity);
         void Update(T entity);

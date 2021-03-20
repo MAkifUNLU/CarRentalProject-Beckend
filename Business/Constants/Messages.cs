@@ -1,6 +1,7 @@
 ﻿using Entities.Concrete;
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -12,6 +13,16 @@ namespace Business.Constants
         public static string Welcome = "Hoş Geldiniz";
         public static string GoodTrip = "İyi Yolculuklar Dileriz";
         public static string CarImageLimitExceeded = "Resim Limitine Ulaşıldı";
+        public static string CarImageListed = "Araba resimleri listelendi";
+        public static string AuthorizationDenied = "Yetkiniz Yok";
+
+        //Auth Messages
+        public static string UserRegistered = "Kayıt Oldu";
+        public static string UserNotFound = "Kullanıcı Bulunamadı";
+        public static string PasswordError = "Parola Hatası";
+        public static string SuccessfulLogin = "Başarılı Giriş";
+        public static string UserAlreadyExists = "Kullanıcı Mevcut";
+        public static string AccessTokenCreated = "Token Oluşturuldu";
 
         // Car Messages
         public static string CarAdded = "Araba Eklendi";
@@ -60,5 +71,6 @@ namespace Business.Constants
         public static string ColorUpdated = "Renk Güncellendi";
         public static string ColorsListed = "Renkler Listelendi";
         public static string ColorAddError = "Eklemek istediğiniz renk zaten mevcut.Farklı bir renk giriniz.";
+        
     }
 }

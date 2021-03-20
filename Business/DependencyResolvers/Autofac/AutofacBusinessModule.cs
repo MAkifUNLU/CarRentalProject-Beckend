@@ -4,6 +4,7 @@ using Business.Abstract;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using System;
@@ -15,9 +16,16 @@ namespace Business.DependencyResolvers.Autofac
     public class AutofacBusinessModule : Module
     {
         protected override void Load(ContainerBuilder builder)
-        {
+        {// Yükleme, uygulama hayata geçtiği zaman çalışır, bir IoC Container'ı oluşturur.
+            // IoC Container, arka planda referans oluşturur, newler, bir bağımlılık varsa belirtilen tipte yanındaki karşılığı olacaktır.
+
+            // Business injections
+            // services.AddSingleton<ICarService, CarManager>(); aynı işlem:
             builder.RegisterType<CarManager>().As<ICarService>().SingleInstance();
+            // ICarService'i isteyen olursa, CarManager'ın instance'ını ver.
+            //DataAccess injections
             builder.RegisterType<EfCarDal>().As<ICarDal>().SingleInstance();
+            // ICarDal'ı isteyen olursa, EfCarDal'ın instance'ını ver.
 
             builder.RegisterType<BrandManager>().As<IBrandService>().SingleInstance();
             builder.RegisterType<EfBrandDal>().As<IBrandDal>().SingleInstance();
@@ -37,14 +45,17 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>().SingleInstance();
 
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
 
-            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();// Çalışan uygulama içerisinde
+
+            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()// implemente edilmiş Interfaceler bulunur
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions()
                 {
-                    Selector = new AspectInterceptorSelector()
+                    Selector = new AspectInterceptorSelector() // Onlar için AspectInterceptorSelector'ı çağır.
                 }).SingleInstance();
-
+            // Yani, Autofac, bütün sınıflar için önce Aspect'i var mı bakar sonra kodun çalışmasını sağlar.
         }
     }
 }

@@ -9,72 +9,172 @@ namespace Core.Utilities.Helpers
 {
     public class FileHelper
     {
-        public static string Add(IFormFile file)
+        private static string _currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
+        private static string _folderName = "\\images\\";
+
+        public static IResult Upload(IFormFile file)
         {
-            var result = newPath(file);
-            try
+            var fileExists = CheckFileExists(file);
+            if (fileExists.Message != null)
             {
-                var sourcePath = Path.GetTempFileName();
-                if (file.Length > 0)
-                    using (var stream = new FileStream(sourcePath, FileMode.Create))
-                        file.CopyTo(stream);
-                File.Move(sourcePath, result.newPath);
+                return new ErrorResult(fileExists.Message);
             }
-            catch (Exception exception)
+
+            var type = Path.GetExtension(file.FileName);
+            var typeValid = CheckFileTypeValid(type);
+            var randomName = Guid.NewGuid().ToString();
+
+            if (typeValid.Message != null)
             {
-                return exception.Message;
+                return new ErrorResult(typeValid.Message);
             }
-            return result.Path2;
+
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            CreateImageFile(_currentDirectory + _folderName + randomName + type, file);
+            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
-        public static string Update(string sourcePath, IFormFile file)
+        public static IResult Update(IFormFile file, string imagePath)
         {
-            var result = newPath(file);
-            try
+            var fileExists = CheckFileExists(file);
+            if (fileExists.Message != null)
             {
-                if (sourcePath.Length > 0)
-                {
-                    using (var stream = new FileStream(result.newPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                    }
-                }
-                File.Delete(sourcePath);
+                return new ErrorResult(fileExists.Message);
             }
-            catch (Exception exception)
+
+            var type = Path.GetExtension(file.FileName);
+            var typeValid = CheckFileTypeValid(type);
+            var randomName = Guid.NewGuid().ToString();
+
+            if (typeValid.Message != null)
             {
-                return exception.Message;
+                return new ErrorResult(typeValid.Message);
             }
-            return result.Path2;
+
+            DeleteOldImageFile((_currentDirectory + imagePath).Replace("/", "\\"));
+            CheckDirectoryExists(_currentDirectory + _folderName);
+            CreateImageFile(_currentDirectory + _folderName + randomName + type, file);
+            return new SuccessResult((_folderName + randomName + type).Replace("\\", "/"));
         }
 
         public static IResult Delete(string path)
         {
-            try
-            {
-                File.Delete(path);
-            }
-            catch (Exception exception)
-            {
-                return new ErrorResult(exception.Message);
-            }
-
+            DeleteOldImageFile((_currentDirectory + path).Replace("/", "\\"));
             return new SuccessResult();
         }
 
-        public static (string newPath, string Path2) newPath(IFormFile file)
+        private static IResult CheckFileExists(IFormFile file)
         {
-            FileInfo ff = new FileInfo(file.FileName);
-            string fileExtension = ff.Extension;
+            if (file != null && file.Length > 0)
+            {
+                return new SuccessResult();
+            }
+            return new ErrorResult("File doesn't exists.");
+        }
 
-            var newPath = Guid.NewGuid() + fileExtension;
 
+        private static IResult CheckFileTypeValid(string type)
+        {
+            if (type != ".jpeg" && type != ".png" && type != ".jpg")
+            {
+                return new ErrorResult("Wrong file type.");
+            }
+            return new SuccessResult();
+        }
 
-            string path = Environment.CurrentDirectory + @"\wwwroot\uploads";
+        private static void CheckDirectoryExists(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+        }
+        private static void CreateImageFile(string directory, IFormFile file)
+        {
+            using (FileStream fs = File.Create(directory))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+            }
+        }
 
-            string result = $@"{path}\{newPath}";
+        private static void DeleteOldImageFile(string directory)
+        {
+            if (File.Exists(directory.Replace("/", "\\")))
+            {
+                File.Delete(directory.Replace("/", "\\"));
+            }
 
-            return (result, $"\\uploads\\{newPath}");
         }
     }
+    //public class FileHelper
+    //{
+    //    public static string Add(IFormFile file)
+    //    {
+    //        var result = newPath(file);
+    //        try
+    //        {
+    //            var sourcePath = Path.GetTempFileName();
+    //            if (file.Length > 0)
+    //                using (var stream = new FileStream(sourcePath, FileMode.Create))
+    //                    file.CopyTo(stream);
+    //            File.Move(sourcePath, result.newPath);
+    //        }
+    //        catch (Exception exception)
+    //        {
+    //            return exception.Message;
+    //        }
+    //        return result.Path2;
+    //    }
+
+    //    public static string Update(string sourcePath, IFormFile file)
+    //    {
+    //        var result = newPath(file);
+    //        try
+    //        {
+    //            if (sourcePath.Length > 0)
+    //            {
+    //                using (var stream = new FileStream(result.newPath, FileMode.Create))
+    //                {
+    //                    file.CopyTo(stream);
+    //                }
+    //            }
+    //            File.Delete(sourcePath);
+    //        }
+    //        catch (Exception exception)
+    //        {
+    //            return exception.Message;
+    //        }
+    //        return result.Path2;
+    //    }
+
+    //    public static IResult Delete(string path)
+    //    {
+    //        try
+    //        {
+    //            File.Delete(path);
+    //        }
+    //        catch (Exception exception)
+    //        {
+    //            return new ErrorResult(exception.Message);
+    //        }
+
+    //        return new SuccessResult();
+    //    }
+
+    //    public static (string newPath, string Path2) newPath(IFormFile file)
+    //    {
+    //        FileInfo ff = new FileInfo(file.FileName);
+    //        string fileExtension = ff.Extension;
+
+    //        var newPath = Guid.NewGuid() + fileExtension;
+
+
+    //        string path = Environment.CurrentDirectory + @"\wwwroot\uploads";
+
+    //        string result = $@"{path}\{newPath}";
+
+    //        return (result, $"\\uploads\\{newPath}");
+    //    }
+    //}
 }
