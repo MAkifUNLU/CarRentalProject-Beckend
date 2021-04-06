@@ -40,6 +40,7 @@ namespace Business.Constants
         public static string RentalDeleted = "Kiralama Silindi";
         public static string RentalUpdated = "Kiralama Güncellendi";
         public static string RentalInValid = "Kiralama Geçersiz";
+        public static string RentedCarAlreadyExists = "Araba Zaten Kiralanmış";
 
         //User Messages
         public static string UserAdded = "Kullanıcı Eklendi";
@@ -71,6 +72,11 @@ namespace Business.Constants
         public static string ColorUpdated = "Renk Güncellendi";
         public static string ColorsListed = "Renkler Listelendi";
         public static string ColorAddError = "Eklemek istediğiniz renk zaten mevcut.Farklı bir renk giriniz.";
+
+        //Credit Card Messaes
+        public static string CreditCardAdded = "Kredi Kartı Eklendi";
+        public static string CreditCardDeleted = "Kredi Kartı Silindi";
+        public static string CreditCardUpdated = "Kredi Kartı Güncellendi";
         
     }
 }

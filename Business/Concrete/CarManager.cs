@@ -24,7 +24,7 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-        [SecuredOperation("car.add,admin")]
+        //[SecuredOperation("car.add,admin")]
         //[CacheRemoveAspect("ICarService.Get")] Silme işlemi dikkat et!!!
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)//Add metodunu doğrula CarValidator da ki kurallara göre
@@ -37,7 +37,7 @@ namespace Business.Concrete
                 return new SuccessResult(Messages.CarAdded);       
         }
 
-        [SecuredOperation("car.delete,admin")]
+        //[SecuredOperation("car.delete,admin")]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
@@ -58,7 +58,7 @@ namespace Business.Concrete
         //[CacheAspect]
         public IDataResult<Car> GetById(int carId)
         {
-            return new SuccessDataResult<Car>(_carDal.GetById(c => c.Id == carId));
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == carId));
 
         }
 
@@ -69,19 +69,23 @@ namespace Business.Concrete
         }
 
         //[CacheAspect]
-        public IDataResult<List<Car>> GetCarsByBrandId(int brandId)
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandId(int brandId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == brandId));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c=>c.BrandId==brandId));
+        }
+        public IDataResult<List<CarDetailDto>> GetCarsByCarId(int carId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.CarId == carId));
         }
 
         //[CacheAspect]
-        public IDataResult<List<Car>> GetCarsByColorId(int colorId)
+        public IDataResult<List<CarDetailDto>> GetCarsByColorId(int colorId)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId == colorId));
         }
 
         //[CacheAspect]
-        [SecuredOperation("car.update,admin")]
+        //[SecuredOperation("car.update,admin")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);

@@ -37,13 +37,13 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                return filter == null                            //Filtre null mı ?
+                return filter == null                                 //Filtre null mı ?
                     ? context.Set<TEntity>().ToList()                //Evetse bura çalışır
                     : context.Set<TEntity>().Where(filter).ToList(); //Değilse bura çalışır
             }
         }
 
-        public TEntity GetById(Expression<Func<TEntity, bool>> filter)
+        public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
             using (TContext context = new TContext())
             {

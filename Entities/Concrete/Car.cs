@@ -7,7 +7,6 @@ namespace Entities.Concrete
 {
     public class Car:IEntity
     {
-        //Çıplak class kalmasın
         public int Id { get; set; }
         public string CarName { get; set; }
         public int BrandId  { get; set; }

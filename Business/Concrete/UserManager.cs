@@ -36,7 +36,7 @@ namespace Business.Concrete
 
         public IDataResult<User> GetById(int userId)
         {
-            return new SuccessDataResult<User>(_userDal.GetById(us => us.Id == userId));
+            return new SuccessDataResult<User>(_userDal.Get(us => us.Id == userId));
         }
 
         public IResult Update(User user)
@@ -50,7 +50,7 @@ namespace Business.Concrete
         }
         public User GetByMail(string email)
         {
-            return _userDal.GetById(u => u.Email == email);
+            return _userDal.Get(u => u.Email == email);
         }
     }
 }

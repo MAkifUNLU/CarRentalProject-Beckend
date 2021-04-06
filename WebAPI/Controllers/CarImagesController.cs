@@ -47,9 +47,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("getbyid")]
-        public IActionResult GetById( int id) 
+        public IActionResult Get( int id) 
         {
-            var result = _carImageService.GetById(id);
+            var result = _carImageService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -91,6 +91,17 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
             return BadRequest(result);
+        }
+
+        [HttpGet("getimagesbycarid")]
+        public IActionResult GetImagesByCarId(int carId)
+        {
+            var result = _carImageService.GetImagesByCarId(carId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
         }
     }
     //[Route("api/[controller]")]
@@ -162,15 +173,15 @@ namespace WebAPI.Controllers
     //        return BadRequest(result);
     //    }
 
-    //    [HttpGet("getimagesbycarid")]
-    //    public IActionResult GetImagesByCarId(int carId)
+    //[HttpGet("getimagesbycarid")]
+    //public IActionResult GetImagesByCarId(int carId)
+    //{
+    //    var result = _carImageService.GetImagesByCarId(carId);
+    //    if (result.Success)
     //    {
-    //        var result = _carImageService.GetImagesByCarId(carId);
-    //        if (result.Success)
-    //        {
-    //            return Ok(result);
-    //        }
-    //        return BadRequest(result.Message);
+    //        return Ok(result);
     //    }
+    //    return BadRequest(result.Message);
+    //}
     //}
 }

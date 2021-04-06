@@ -7,11 +7,11 @@ using System.Text;
 namespace DataAccess.Concrete.EntityFramework
 {
     //Db tabloları ile proje klaslarını bağlamak
-    public class MyDatabaseContext: DbContext //kurduğumuz entityframework ile DbContext geliyor.
+    public class CarRentalContext: DbContext //kurduğumuz entityframework ile DbContext geliyor.
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) //projem hangi veritabanıyla ilişkili
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=MyDatabase;Trusted_Connection=true"); //hangi veritabanına bağlanacağımızı söylüyoruz
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=CarRental;Trusted_Connection=true"); //hangi veritabanına bağlanacağımızı söylüyoruz
         }
         //hangi veritabanına bağlanacağımızı söylüyoruz
 
@@ -24,6 +24,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<CarImage> CarImages { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<CreditCard> CreditCards { get; set; }
 
     }
 }
