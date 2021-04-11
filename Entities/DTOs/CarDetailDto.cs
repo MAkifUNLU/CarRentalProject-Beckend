@@ -21,6 +21,6 @@ namespace Entities.DTOs
         public string ImagePath { get; set; }
         public DateTime Date { get; set; }
         public bool Status { get; set; }
-
+        public int FindexPoint { get; set; }
     }
 }

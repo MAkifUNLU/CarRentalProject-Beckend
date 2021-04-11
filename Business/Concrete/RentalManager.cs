@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -15,18 +16,24 @@ namespace Business.Concrete
     public class RentalManager : IRentalService
     {
         IRentalDal _rentalDal;
+        private ICustomerService _customerService;
+        private ICarService _carService;
 
-        public RentalManager(IRentalDal rentalDal)
+        public RentalManager(IRentalDal rentalDal, ICarService carService, ICustomerService customerService)
         {
             _rentalDal = rentalDal;
+            _carService = carService;
+            _customerService = customerService;
         }
 
-        [SecuredOperation("rental.add,admin")]
+        
         public IResult Add(Rental rental)
         {
-            var result = _rentalDal.GetAll(r => r.CarId == rental.CarId && (r.ReturnDate == null || r.ReturnDate < DateTime.Now)).Any();
+            var result = BusinessRules.Run(CheckIfCarRented(rental),
+               FindexPointCheck(rental.CustomerId, rental.CarId));
 
-            if (result)
+
+            if (result !=null)
             {
                 return new ErrorResult(Messages.RentedCarAlreadyExists);
             }
@@ -67,6 +74,43 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.CarId == carId));
         }
 
+        private IResult CheckIfCarRented(Rental rental)
+        {
+            var result = _rentalDal.GetAll(
+                r => r.CarId == rental.CarId &&
+                (r.ReturnDate == null || r.ReturnDate < DateTime.Now)
+                ).Any();
+
+            if (result)
+            {
+                return new ErrorResult(Messages.CarAlreadyRented);
+            }
+
+            return new SuccessResult();
+        }
+
+
+        private IResult FindexPointCheck(int customerId, int carId)
+        {
+            var customer = _customerService.GetById(customerId).Data;
+
+            if (customer.FindexPoint == 0)
+            {
+                return new ErrorResult(Messages.CustomerFindexPointIsZero);
+            }
+
+            var car = _carService.GetById(carId).Data;
+
+            if (customer.FindexPoint < car.FindexPoint)
+            {
+                return new ErrorResult(Messages.CustomerScoreInvalid);
+            }
+
+            customer.FindexPoint = (car.FindexPoint / 2) + customer.FindexPoint;
+
+            _customerService.Update(customer);
+            return new SuccessResult();
+        }
         //public IDataResult<List<Rental>> GetAllByCarId(int carId)
         //{
         //    return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(r => r.CarId == carId));

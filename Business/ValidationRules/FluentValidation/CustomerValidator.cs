@@ -10,7 +10,10 @@ namespace Business.ValidationRules.FluentValidation
     {
         public CustomerValidator()
         {
-            RuleFor(c => c.CompanyName).NotEmpty();
+            RuleFor(customer => customer.UserId).NotEmpty();
+
+            RuleFor(customer => customer.FindexPoint).GreaterThan(0);
+            RuleFor(customer => customer.FindexPoint).LessThanOrEqualTo(1900);
         }
     }
 }

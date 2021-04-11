@@ -18,7 +18,7 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        //[SecuredOperation("brand.add,admin")]
+        [SecuredOperation("brand.add,admin")]
         public IResult Add(Brand brand)
         {
             _brandDal.Add(brand);

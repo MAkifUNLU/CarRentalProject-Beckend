@@ -15,5 +15,6 @@ namespace Entities.Concrete
         public string CardNumber { get; set; }
         public string CardCvv { get; set; }
         public decimal MoneyInTheCard { get; set; }
+        public int CustomerId { get; set; }
     }
 }

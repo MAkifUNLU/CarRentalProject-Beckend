@@ -37,7 +37,9 @@ namespace DataAccess.Concrete.EntityFramework
                                  DailyPrice = ca.DailyPrice,
                                  ImageId = ci.Id,
                                  ImagePath = ci.ImagePath,
-                                 Date = ci.Date
+                                 Date = ci.Date,
+                                 Status = !context.Rentals.Any(r => r.CarId == ca.Id && (r.ReturnDate == null || r.ReturnDate > DateTime.Now)),
+                                 FindexPoint = ca.FindexPoint
                              };
                 return filter == null ? result.ToList() : result.Where(filter).ToList();
             }

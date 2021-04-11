@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -31,6 +32,8 @@ namespace Business.Constants
         public static string CarDeleted = "Araba Silindi";
         public static string CarUpdated = "Araba Güncellendi";
         public static string CarNameInValid = "Araba İsmi Geçersiz";
+        public static string CarAlreadyRented = "Araç Zaten Kiralanmış";
+        public static string CarNotFound = "Araba Bulunamadı";
         public static string CarAddError = "Eklemek istediğiniz araba zaten mevcut.Farklı bir araba giriniz.";
 
         // Rental Messages
@@ -57,6 +60,8 @@ namespace Business.Constants
         public static string CustomerDeleted = "Müşteri Silindi";
         public static string CustomerUpdated = "Müşteri Güncellendi";
         public static string CustomerNameInValid = "Müşteri İsmi Geçersiz";
+        public static string CustomerFindexPointIsZero = "Müşteri Findez Puanı Sıfır";
+        public static string CustomerScoreInvalid = "Müşteri Puanı Geçersiz";
         public static string CustomerAddError = "Eklemek istediğiniz müşteri zaten mevcut.Farklı bir müşteri giriniz.";
 
         //Brand Messages
